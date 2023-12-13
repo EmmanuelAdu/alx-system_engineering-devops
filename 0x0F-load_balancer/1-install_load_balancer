@@ -12,10 +12,10 @@ sudo apt-get -y install haproxy
 # Edit config file for haproxy by appending
 server_config= \
 "
-frontend emma-frontend
+frontend emma-adu-frontend
         bind *:80
 	mode http
-	default_backend emma-backend
+	default_backend emma-adu-backend
 backend emma-backend
         balance roundrobin
 	server 313394-web-01 35.153.18.211:80 check
