@@ -10,18 +10,16 @@ sudo apt-get update
 sudo apt-get -y install haproxy
 
 # Edit config file for haproxy by appending
-server_config= \
-"
+echo "
 frontend emma-adu-frontend
         bind *:80
 	mode http
 	default_backend emma-adu-backend
-backend emma-backend
+backend emma-adu-backend
         balance roundrobin
 	server 313394-web-01 35.153.18.211:80 check
-	server 313394-web-01 34.207.222.234:80 check
-"
-echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
+	server 313394-web-02 34.207.222.234:80 check
+" | sudo tee -a /etc/haproxy/haproxy.cfg
 
 # Enable haproxy to be started by init script
 echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
