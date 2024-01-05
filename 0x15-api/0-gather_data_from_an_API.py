@@ -2,12 +2,12 @@
 """ This script gathers data from an API
 """
 
-from sys import argv
 import requests
+import sys
 
 
 if __name__ == "__main__":
-    employee_id = argv[1]
+    employee_id = sys.argv[1]
     base_url = "https://jsonplaceholder.typicode.com/users"
     url = base_url + "/" + employee_id
 
