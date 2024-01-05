@@ -29,4 +29,4 @@ if __name__ == "__main__":
           .format(employee_name, done, len(tasks)))
 
     for task in done_tasks:
-        print("\t {}".format(task.get('title')))
+        print("     {}".format(task.get('title')))
