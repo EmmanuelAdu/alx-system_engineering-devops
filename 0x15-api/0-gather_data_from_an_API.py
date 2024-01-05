@@ -1,39 +1,31 @@
 #!/usr/bin/python3
-""" This script gathers data from an API
-"""
+"""Accessing a REST API for todo lists of employees"""
 
 import requests
 import sys
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python3 script_name.py <employee_id>")
-        sys.exit(1)
 
-    employee_id = sys.argv[1]
-    base_url = "https://jsonplaceholder.typicode.com/users"
-    url = f"{base_url}/{employee_id}"
+if __name__ == '__main__':
+    employeeId = sys.argv[1]
+    baseUrl = "https://jsonplaceholder.typicode.com/users"
+    url = baseUrl + "/" + employeeId
 
     response = requests.get(url)
-    if response.status_code != 200:
-        print("Failed to fetch employee data.")
-        sys.exit(1)
+    employeeName = response.json().get('name')
 
-    employee_data = response.json()
-    employee_name = employee_data.get('name')
+    todoUrl = url + "/todos"
+    response = requests.get(todoUrl)
+    tasks = response.json()
+    done = 0
+    done_tasks = []
 
-    todo_url = f"{url}/todos"
-    todo_response = requests.get(todo_url)
-    if todo_response.status_code != 200:
-        print("Failed to fetch TODO data.")
-        sys.exit(1)
+    for task in tasks:
+        if task.get('completed'):
+            done_tasks.append(task)
+            done += 1
 
-    tasks = todo_response.json()
-    done_tasks = [task for task in tasks if task.get('completed')]
-    total_tasks = len(tasks)
-    num_done_tasks = len(done_tasks)
+    print("Employee {} is done with tasks({}/{}):"
+          .format(employeeName, done, len(tasks)))
 
-    print(f"Employee {employee_name} is done\
-          with tasks({num_done_tasks}/{total_tasks}):")
     for task in done_tasks:
-        print(f" {' ' * 5}{task.get('title')}")
+        print("\t {}".format(task.get('title')))
